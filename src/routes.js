@@ -1,54 +1,44 @@
-// import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-
-import Dashboard from './pages/Dashboard';
-
-import 'react-native-gesture-handler';
 import * as React from 'react';
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import HomeScreen from './pages/Home';
+import SignInScreen from './pages/SignIn';
+import SignUpScreen from './pages/SignUp';
+
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default function App() {
+function RoutesTabs() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='SignIn'>
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+    </Tab.Navigator>
   );
 }
 
 
-// const Tab = createBottomTabNavigator();
+export default function App(isSignedIn) {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='SignIn'>
 
-// function MyTabs() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Home" component={HomeScreen} />
-//       <Tab.Screen name="Settings" component={SettingsScreen} />
-//     </Tab.Navigator>
-//   );
-// }
+        {
+          isSignedIn ? (
+            <>
+              <Stack.Screen name="Home" component={RoutesTabs} />
+            </>
+          ) : (
+              <>
+                <Stack.Screen name="SignIn" component={SignInScreen} />
+                <Stack.Screen name="SignUp" component={SignUpScreen} />
+              </>
+            )
+        }
 
-// export default (isSigned = false) =>
-//   createAppContainer(
-//     createSwitchNavigator(
-//       {
-//         Authentication: createSwitchNavigator({
-//           SignIn,
-//           SignUp,
-//         }),
-//         App: createBottomTabNavigator({
-//           Dashboard,
-//         }),
-//       },
-//       {
-//         initialRouteName: isSigned ? 'App' : 'Sign',
-//       },
-//     ),
-//   );
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}

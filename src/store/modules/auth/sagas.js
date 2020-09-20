@@ -1,38 +1,37 @@
-import {call, put, all, takeLatest} from 'redux-saga/effects';
-import {Alert} from 'react-native';
+import { call, put, all, takeLatest } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 
 import api from '../../../services/api';
 
-import {signInSuccess, signFailure} from './actions';
+import { signInSuccess, signFailure } from './actions';
 
-export function* signIn({payload}) {
-  const {email, password} = payload;
+export function* signIn({ payload }) {
+  const { email, password } = payload;
 
   try {
-    const response = yield call(api.post, 'sessions', {email, password});
-    console.tron.log('#######', email, password)
-    const {token, user} = response.data;
-    console.tron.log('$$$$$$$', response.data)
+    const response = yield call(api.post, 'session', { email, password });
+    const { token, user } = response.data;
+    console.tron.log('DENTRO DO SAGA', response)
 
-    if (user.provider) {
-      Alert.alert('Login error', 'User cannot be a provider.');
-      return;
-    }
+    // if (user.provider) {
+    //   Alert.alert('Login error', 'User cannot be a provider.');
+    //   return;
+    // }
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     yield put(signInSuccess(token, user));
   } catch (error) {
-    Alert.alert('Login error', 'Authentication failed, check your data.');
+    Alert.alert('Atenção!', 'Falha ao entrar, verifique as informaçãoes.');
     yield put(signFailure());
   }
 }
 
-export function* signUp({payload}) {
+export function* signUp({ payload }) {
   try {
-    const {name, email, password} = payload;
+    const { name, email, password } = payload;
 
-    yield call(api.post, 'users', {name, email, password});
+    yield call(api.post, 'users', { name, email, password });
 
     Alert.alert(
       'Registration successful',
@@ -45,10 +44,10 @@ export function* signUp({payload}) {
   }
 }
 
-export function setToken({payload}) {
+export function setToken({ payload }) {
   if (!payload) return;
 
-  const {token} = payload.auth;
+  const { token } = payload.auth;
 
   if (token) {
     api.defaults.headers.Authorization = `Bearer ${token}`;

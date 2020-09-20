@@ -1,11 +1,11 @@
-import React, {useRef, useState} from 'react';
-import {Image} from 'react-native';
-import {useDispatch} from 'react-redux';
+import React, { useRef, useState } from 'react';
+import { Image } from 'react-native';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../../assets/logo.png';
 
 import BackGround from '../../Components/Background';
-import {signInRequest} from '../../store/modules/auth/actions';
+import { signInRequest } from '../../store/modules/auth/actions';
 import {
   Container,
   Form,
@@ -15,7 +15,7 @@ import {
   SignLinkText,
 } from './styles';
 
-export default function SignIn({navigation}) {
+export default function SignIn({ navigation }) {
   const dispath = useDispatch();
   const passwordRef = useRef();
 
@@ -23,6 +23,7 @@ export default function SignIn({navigation}) {
   const [password, setPassword] = useState([]);
 
   function handleSubmit() {
+    console.tron.log('CHECK DO MÉTODO')
     dispath(signInRequest(email, password));
   }
 
