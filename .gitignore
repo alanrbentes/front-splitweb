@@ -1,6 +1,6 @@
 # Application
-src/config/
-src/services/
+# src/config
+# src/services/
 
 # OSX
 #
