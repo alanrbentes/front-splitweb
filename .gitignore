@@ -1,6 +1,8 @@
 # Application
-# src/config
-# src/services/
+src/config
+src/services
+src/config/ReactotronConfig.js
+src/services/api.js
 
 # OSX
 #

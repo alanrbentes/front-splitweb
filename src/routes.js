@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,6 +13,22 @@ import OrderServiceScreen from './pages/OrderOfService';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+function getHeaderTitle(route) {
+
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'search';
+
+  switch (routeName) {
+    case 'search':
+      return 'Lista de clientes';
+    case 'account':
+      return 'Cadastro de clientes';
+    case 'apparatus':
+      return 'Cadastro de aparelhos';
+    case 'os':
+      return 'Ordem de serviço';
+  }
+}
 
 function RoutesTabs() {
   return (
@@ -27,7 +43,7 @@ function RoutesTabs() {
 
       <Tab.Screen name="search" component={SearchScreen} options={
         {
-          tabBarLabel: 'Busca',
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home"
@@ -48,7 +64,7 @@ function RoutesTabs() {
           <MaterialCommunityIcons name="car-defrost-rear" color={color} size={30} />
         ),
       }} />
-      <Tab.Screen name="services" component={OrderServiceScreen} options={{
+      <Tab.Screen name="os" component={OrderServiceScreen} options={{
         tabBarLabel: 'Ordem de Serviço',
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="file-document-edit-outline" color={color} size={30} />
@@ -67,8 +83,7 @@ export default function App(isSignedIn) {
         {
           isSignedIn ? (
             <>
-
-              <Stack.Screen name="home" component={RoutesTabs} />
+              <Stack.Screen name="SplitWeb" component={RoutesTabs} options={({ route }) => ({ headerTitle: getHeaderTitle(route) })} />
             </>
           ) : (
               <>
